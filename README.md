@@ -6,6 +6,10 @@ This project is a full-stack clone of the popular accommodation booking platform
 
 
 ## Team Roles
+<p>Backend Developer: Responsible for implementing API endpoints, database schemas, and business logic.</p>
+<p>Database Administrator: Manages database design, indexing, and optimizations.</p>
+<p>DevOps Engineer: Handles deployment, monitoring, and scaling of the backend services.</p>
+<p>QA Engineer: Ensures the backend functionalities are thoroughly tested and meet quality standards.</p>
 
 ## Technology Stack
 <p>Django: A high-level Python web framework used for building the RESTful API.</p>
