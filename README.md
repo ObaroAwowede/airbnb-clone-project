@@ -39,7 +39,35 @@ This project is a full-stack clone of the popular accommodation booking platform
 <p>Payment Processing: Integrate a payment system to handle transactions and record payment details.</p>
 <p>Review System: Allow users to leave reviews and ratings for properties.</p>
 <p>Data Optimization: Ensure efficient data retrieval and storage through database optimizations.</p>
+
 ## API Security
+
+### 1. Authentication
+- **Implementation**: JSON Web Tokens (JWT) will be used for user authentication. Tokens are generated upon login and must be included in the headers of subsequent requests.
+- **Why it matters**: Ensures that only verified users can access protected resources (e.g., booking a property, viewing personal reservations). This prevents impersonation and protects accounts.
+
+### 2. Authorization
+- **Implementation**: Role-based and resource-based authorization. For example, only a host can manage their own listings, and only the booking owner can cancel their reservation.
+- **Why it matters**: Protects user data by ensuring users cannot access or modify data that doesn’t belong to them. Prevents unauthorized actions like tampering with someone else’s booking.
+
+### 3. Rate Limiting
+- **Implementation**: Throttling requests (e.g., max X requests per minute per IP) to mitigate brute-force attacks and abuse.
+- **Why it matters**: Prevents denial-of-service (DoS) attacks, protects login endpoints from brute-force attempts, and ensures system stability for all users.
+
+### 4. Data Validation & Sanitization
+- **Implementation**: Strict validation for all incoming data (e.g., property descriptions, booking dates) and sanitization to avoid malicious input.
+- **Why it matters**: Protects against common web vulnerabilities such as SQL Injection, XSS (Cross-Site Scripting), and malformed data that could break the system.
+
+### 5. Secure Data Storage & Transmission
+- **Implementation**: 
+  - Passwords hashed with strong algorithms (e.g., bcrypt).
+  - HTTPS enforced for encrypted communication.
+- **Why it matters**: Prevents sensitive data (like login credentials or payment details) from being stolen during transmission or if the database is compromised.
+
+### 6. Payment Security
+- **Implementation**: Payments are processed via a trusted third-party provider (e.g., Stripe/PayPal) using secure APIs. No raw payment details are stored on our servers.
+- **Why it matters**: Protects financial information and reduces liability by relying on established
+
 
 ## CI/CD Pipeline
 
