@@ -51,8 +51,6 @@ This project is a backend clone of Airbnb. The goal is a functional API that sup
 | user_id    | FK → users.id (many bookings → one user) |
 | property_id| FK → properties.id |
 
-> Note: Use foreign keys (many-to-one) for `user` and `property` so users can have multiple bookings and properties can receive multiple bookings.
-
 ### Reviews
 | Field          | Type / Notes |
 |----------------|--------------|
