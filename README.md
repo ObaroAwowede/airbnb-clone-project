@@ -1,73 +1,111 @@
-# airbnb-clone-project.
-
+# airbnb-clone-project
 ## Project Description
-
-This project is a full-stack clone of the popular accommodation booking platform AirBnB. The goal is to build a functional web application that allows users to browse property listings, view detailed property information, and complete bookings.
-
+This project is a backend clone of Airbnb. The goal is a functional API that supports user management, property listings, bookings, payments, and reviews.
+---
 
 ## Team Roles
-<p>Backend Developer: Responsible for implementing API endpoints, database schemas, and business logic.</p>
-<p>Database Administrator: Manages database design, indexing, and optimizations.</p>
-<p>DevOps Engineer: Handles deployment, monitoring, and scaling of the backend services.</p>
-<p>QA Engineer: Ensures the backend functionalities are thoroughly tested and meet quality standards.</p>
+- **Backend Developer:** Implements API endpoints, database schemas, and business logic.  
+- **Database Administrator:** Designs schema, indexes, and optimizations.  
+- **DevOps Engineer:** Handles deployment, monitoring, and scaling.  
+- **QA Engineer:** Tests backend functionality and enforces quality standards.
+
+---
 
 ## Technology Stack
-<p>Django: A high-level Python web framework used for building the RESTful API.</p>
-<p>Django REST Framework: Provides tools for creating and managing RESTful APIs.</p>
-<p>PostgreSQL: A powerful relational database used for data storage.</p>
-<p>GraphQL: Allows for flexible and efficient querying of data.</p>
-<p>Celery: For handling asynchronous tasks such as sending notifications or processing payments.</p>
-<p>Redis: Used for caching and session management.</p>
-<p>Docker: Containerization tool for consistent development and deployment environments.</p>
+- **Django** — Python web framework for the REST API.  
+- **Django REST Framework** — API tools and serializers.  
+- **PostgreSQL** — Relational database.  
+- **GraphQL** — Optional flexible querying layer.  
+- **Celery** — Asynchronous task processing (emails, background jobs).  
+- **Redis** — Caching and broker for Celery.  
+- **Docker** — Containerization for consistent dev/production environments.
+
+---
 
 ## Database Design
-<h3>Users</h3>
-<p>Fields:</p> <p>Username, email, password, id, first_name, last_name</p>
-<h3>Properties</h3>
-<p>Fields:</p> <p>Property_name, Listing_price, Owner (This is a foreign key to users, therefore multiple properties can be attributed to one owner)</p>
-<h3>Bookings </h3>
-<p>Fields:</p> <p>Date, User (This is a one to one relationship)</p>
-<h3>Reviews</h3>
-<p>Fields:</p> <p>title, rating, description, published_date</p>
-<h3>Payments</h3>
-<p>Fields:</p> <p>amount, user (one to one relationship with a user), property (one to one relationship with a property), Booking (One to one relationship with a booking)</p>
+
+### Users
+| Field       | Type / Notes |
+|-------------|--------------|
+| id          | PK           |
+| username    | unique       |
+| email       | unique       |
+| password    | hashed       |
+| first_name  |              |
+| last_name   |              |
+
+### Properties
+| Field         | Type / Notes |
+|---------------|--------------|
+| id            | PK           |
+| property_name |              |
+| listing_price | decimal      |
+| owner_id      | FK → users.id (many properties → one owner) |
+
+### Bookings
+| Field      | Type / Notes |
+|------------|--------------|
+| id         | PK           |
+| start_date | date         |
+| end_date   | date         |
+| user_id    | FK → users.id (many bookings → one user) |
+| property_id| FK → properties.id |
+
+> Note: Use foreign keys (many-to-one) for `user` and `property` so users can have multiple bookings and properties can receive multiple bookings.
+
+### Reviews
+| Field          | Type / Notes |
+|----------------|--------------|
+| id             | PK           |
+| title          |              |
+| rating         | integer      |
+| description    | text         |
+| published_date | timestamp    |
+| user_id        | FK → users.id |
+| property_id    | FK → properties.id |
+
+### Payments
+| Field       | Type / Notes |
+|-------------|--------------|
+| id          | PK           |
+| amount      | decimal      |
+| user_id     | FK → users.id |
+| property_id | FK → properties.id |
+| booking_id  | FK → bookings.id (one payment typically maps to one booking) |
+
+---
 
 ## Feature Breakdown
-###1.<p>User Management: Implement a secure system for user registration, authentication, and profile management.</p>
-###2.<p>Property Management: Develop features for property listing creation, updates, and retrieval.</p>
-###3.<p>Booking System: Create a booking mechanism for users to reserve properties and manage booking details.</p>
-###4.<p>Payment Processing: Integrate a payment system to handle transactions and record payment details.</p>
-###5.<p>Review System: Allow users to leave reviews and ratings for properties.</p>
-###6.<p>Data Optimization: Ensure efficient data retrieval and storage through database optimizations.</p>
+- **User Management:** Registration, authentication, profile management.  
+- **Property Management:** Create, update, list property listings.  
+- **Booking System:** Reserve properties, view/manage bookings.  
+- **Payment Processing:** Integrate third-party payments and record transactions.  
+- **Review System:** Allow ratings and reviews for properties.  
+- **Data Optimization:** Indexing and query optimizations for performance.
+
+---
 
 ## API Security
+Security is essential because the API handles personal data and payments. Key measures:
 
-### 1. Authentication
-- **Implementation**: JSON Web Tokens (JWT) will be used for user authentication. Tokens are generated upon login and must be included in the headers of subsequent requests.
-- **Why it matters**: Ensures that only verified users can access protected resources (e.g., booking a property, viewing personal reservations). This prevents impersonation and protects accounts.
+- **Authentication:** JWT (or OAuth2) for signed tokens on requests — prevents impersonation.  
+- **Authorization:** Role- and resource-based checks (hosts vs. guests) — prevents data tampering.  
+- **Rate limiting:** Throttle endpoints (per-IP / per-user) — mitigates brute force and abuse.  
+- **Validation & sanitization:** Strict input validation to prevent SQLi/XSS and malformed data.  
+- **Secure storage & transport:** Hash passwords (bcrypt/Argon2), enforce HTTPS — protects credentials in transit/storage.  
+- **Payment security:** Use PCI-compliant providers (Stripe/PayPal); do not store raw card data.  
+- **Logging & monitoring:** Audit logs and alerts for suspicious activity.
 
-### 2. Authorization
-- **Implementation**: Role-based and resource-based authorization. For example, only a host can manage their own listings, and only the booking owner can cancel their reservation.
-- **Why it matters**: Protects user data by ensuring users cannot access or modify data that doesn’t belong to them. Prevents unauthorized actions like tampering with someone else’s booking.
+---
 
-### 3. Rate Limiting
-- **Implementation**: Throttling requests (e.g., max X requests per minute per IP) to mitigate brute-force attacks and abuse.
-- **Why it matters**: Prevents denial-of-service (DoS) attacks, protects login endpoints from brute-force attempts, and ensures system stability for all users.
+## 🚀 CI/CD Pipeline
+**CI/CD** automates testing and deployment.
 
-### 4. Data Validation & Sanitization
-- **Implementation**: Strict validation for all incoming data (e.g., property descriptions, booking dates) and sanitization to avoid malicious input.
-- **Why it matters**: Protects against common web vulnerabilities such as SQL Injection, XSS (Cross-Site Scripting), and malformed data that could break the system.
+- **CI:** Run tests and linters on push/PR.  
+- **CD:** Deploy to staging/production after checks pass.
 
-### 5. Secure Data Storage & Transmission
-- **Implementation**: 
-  - Passwords hashed with strong algorithms (e.g., bcrypt).
-  - HTTPS enforced for encrypted communication.
-- **Why it matters**: Prevents sensitive data (like login credentials or payment details) from being stolen during transmission or if the database is compromised.
+**Why it matters:** Faster, safer releases and fewer manual errors.
 
-### 6. Payment Security
-- **Implementation**: Payments are processed via a trusted third-party provider (e.g., Stripe/PayPal) using secure APIs. No raw payment details are stored on our servers.
-- **Why it matters**: Protects financial information and reduces liability by relying on established
+**Tools:** GitHub Actions, Docker, Heroku/AWS/Render, Postman/Newman for API tests.
 
-
-## CI/CD Pipeline
-
+---
