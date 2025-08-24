@@ -21,6 +21,12 @@ This project is a full-stack clone of the popular accommodation booking platform
 <p>Docker: Containerization tool for consistent development and deployment environments.</p>
 
 ## Database Design
+<h3>Users</h3>
+<p>Fields: Username, email, password, id, first_name, last_name</p>
+<h3>Properties: Property_name, Listing_price, Owner (This is a foreign key to users, therefore multiple properties can be attributed to one owner)</h3>
+<h3>Bookings: date, user (This is a one to one relationship)</h3>
+<h3>Reviews: title, rating, description, published_date</h3>
+<h3>Payments: amount, user (one to one relationship with a user), property (one to one relationship with a property</h3>
 
 ## Feature Breakdown
 
