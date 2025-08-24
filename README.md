@@ -33,7 +33,12 @@ This project is a full-stack clone of the popular accommodation booking platform
 <p>Fields:</p> <p>amount, user (one to one relationship with a user), property (one to one relationship with a property), Booking (One to one relationship with a booking)</p>
 
 ## Feature Breakdown
-
+<p>User Management: Implement a secure system for user registration, authentication, and profile management.</p>
+<p>Property Management: Develop features for property listing creation, updates, and retrieval.</p>
+<p>Booking System: Create a booking mechanism for users to reserve properties and manage booking details.</p>
+<p>Payment Processing: Integrate a payment system to handle transactions and record payment details.</p>
+<p>Review System: Allow users to leave reviews and ratings for properties.</p>
+<p>Data Optimization: Ensure efficient data retrieval and storage through database optimizations.</p>
 ## API Security
 
 ## CI/CD Pipeline
